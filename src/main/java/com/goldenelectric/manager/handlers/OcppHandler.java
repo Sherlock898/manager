@@ -49,13 +49,14 @@ public class OcppHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("Connection established");
+        System.out.println("Connection established from " + session.getId());
         // Check for ocpp protocol
         String protocol = session.getHandshakeHeaders().get("Sec-WebSocket-Protocol").get(0);
         if (!protocol.equals("ocpp1.6")) {
             session.close(CloseStatus.POLICY_VIOLATION);
         }
         // Get charger id from uri path and create a new charging point
+        System.out.println(session.getUri().getPath());
         String chargerId = session.getUri().getPath().split("/")[3];
         String chargerUser = "null";
         try {
@@ -63,6 +64,7 @@ public class OcppHandler extends TextWebSocketHandler {
         } catch (Exception e) {
             System.out.println("Error, user not especified.");
         }
+        System.out.println("Creating charge point with id: " + chargerId);
         ChargePoint cp = new ChargePoint(chargerId, chargerUser);
         sessionManager.addChargePoint(session, cp);
 
@@ -159,6 +161,7 @@ public class OcppHandler extends TextWebSocketHandler {
                 bootNotificationReq.getChargePointVendor(), bootNotificationReq.getFirmwareVersion());
 
         // Send response
+        System.out.println("Sending boot notification response");
         BootNotificationConf conf = new BootNotificationConf(DateUtil.getCurrentTime(), 60, "Accepted");
         sendResponse(session, messageId, conf);
     }

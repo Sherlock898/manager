@@ -29,6 +29,7 @@ public class WebSocketSessionManager {
 
     public void addChargePoint(WebSocketSession session, ChargePoint cp) {
         cpSessions.put(session, cp);
+        System.out.println("ChargePoint added: " + cp.getId());
     }
 
     public void removeChargePoint(WebSocketSession session) {
