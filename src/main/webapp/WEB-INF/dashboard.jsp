@@ -175,7 +175,7 @@
         let chargePoints = []
 
         // WebSocket connection
-        const socket = new WebSocket('ws://localhost:8080/user/${user.id}');
+        const socket = new WebSocket('ws://manager-production-0131.up.railway.app/user/${user.id}');
 
         // Function to start loading
         function startLoading(pointsId) {
